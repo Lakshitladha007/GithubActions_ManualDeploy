@@ -1,0 +1,47 @@
+name: manual deployment project
+
+on: push 
+
+jobs:
+  build-job: 
+    runs-on: ubunutu:latest
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+    
+    - name: Intslal Cowsay program
+      run: sudo apt-get install cowsay -y
+
+    - name: Execute Cowsay CMD
+      run: cowsay -f dragon "Ru for cover, I am a dragon....RAWR">> dragon.txt
+
+    - name: Upload dragon text file
+      uses: actions/upload-artifact@v3
+      with:
+        name: dragon-text-file
+        path: dragon.txt
+
+
+  test-job:
+    needs: [build-job]
+    runs-on: ubunutu:latest
+    steps:
+    - name: download dragon text file
+      uses: actions/download-artifact@v3
+      with:
+        name: dragon-text-file
+
+    - name: Test file exists
+      run: grep -i "dragon" dragon.txt
+
+  deploy-job:
+    needs: [test-job]
+    runs-on: ubuntu:latest
+    steps:
+    - name: Read file
+      run: cat dragon.txt
+
+    - name: Deploy
+      run: echo Deploying
+
+    
