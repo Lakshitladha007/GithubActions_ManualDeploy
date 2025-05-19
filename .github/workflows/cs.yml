@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build-job: 
-    runs-on: ubunutu:latest
+    runs-on: ubunutu-latest
     steps:
     - name: checkout repo
       uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
 
   test-job:
     needs: [build-job]
-    runs-on: ubunutu:latest
+    runs-on: ubunutu-latest
     steps:
     - name: download dragon text file
       uses: actions/download-artifact@v3
@@ -36,7 +36,7 @@ jobs:
 
   deploy-job:
     needs: [test-job]
-    runs-on: ubuntu:latest
+    runs-on: ubuntu-latest
     steps:
     - name: Read file
       run: cat dragon.txt
