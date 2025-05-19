@@ -1,19 +1,19 @@
 name: manual deployment project
 
-on: push 
+on: push
 
 jobs:
   build-job: 
-    runs-on: ubunutu-latest
+    runs-on: ubuntu-latest  
     steps:
-    - name: checkout repo
+    - name: Checkout repo
       uses: actions/checkout@v4
     
-    - name: Intslal Cowsay program
-      run: sudo apt-get install cowsay -y
+    - name: Install Cowsay program  
+      run: sudo apt-get update && sudo apt-get install cowsay -y
 
     - name: Execute Cowsay CMD
-      run: cowsay -f dragon "Ru for cover, I am a dragon....RAWR">> dragon.txt
+      run: cowsay -f dragon "Run for cover, I am a dragon....RAWR" >> dragon.txt  
 
     - name: Upload dragon text file
       uses: actions/upload-artifact@v3
@@ -21,12 +21,11 @@ jobs:
         name: dragon-text-file
         path: dragon.txt
 
-
   test-job:
     needs: [build-job]
-    runs-on: ubunutu-latest
+    runs-on: ubuntu-latest 
     steps:
-    - name: download dragon text file
+    - name: Download dragon text file
       uses: actions/download-artifact@v3
       with:
         name: dragon-text-file
@@ -42,6 +41,4 @@ jobs:
       run: cat dragon.txt
 
     - name: Deploy
-      run: echo Deploying
-
-    
+      run: echo "Deploying..."
